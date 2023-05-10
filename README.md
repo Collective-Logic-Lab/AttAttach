@@ -10,7 +10,7 @@ The attractor landscape of the deterministic dynamics of a Boolean network with 
 Therefore, it is the union of a finite number of disconnected components. Each component consists of a single cycle (a fixed-point when the length of the cycle is equal to 1) with a certain number of converging branches (subnetworks with a tree topology) attached to it.
 **AttAttach** generates this landscape for a specified number of cycles of given lengths and assigned relative sizes of the basins of attraction.
 
-<img src="landscape.png" alt="..." width="544" height="561">
+<img src="landscape.png" alt="..." width="400" height="400">
 
 For each basin, it first generates the transitions within the cycle. It then selects a random number of nodes in the basin (according to a uniform distribution) that will directly transition to the cycle. It progressively populates outer shells of nodes until all nodes in the basin are included.
 
