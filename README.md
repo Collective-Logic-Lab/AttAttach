@@ -3,7 +3,6 @@
 The attractor landscape of the deterministic dynamics of a Boolean network with $N$ dynamic nodes possesses the following properties:
 
 1) It is a directed graph with $2^N$ nodes (global states of the Boolean network);
-
 2) The out-degree of each node is equal to 1.
 
 Therefore, it is the union of a finite number of disconnected components. Each component consists of a single cycle (a fixed-point when the length of the cycle is equal to 1) with a certain number of converging branches (subnetworks with a tree topology) attached to it.
