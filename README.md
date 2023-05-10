@@ -12,7 +12,7 @@ Therefore, it is the union of a finite number of disconnected components. Each c
 
 <img src="landscape.png" alt="..." width="400" height="400">
 
-For each basin, it first generates the transitions within the cycle. It then selects a random number of nodes in the basin (according to a uniform distribution) that will directly transition to the cycle. It progressively populates outer shells of nodes until all nodes in the basin are included.
+For each basin, **AttAttach** first generates the transitions within the cycle. It then selects a random number of nodes in the basin (according to a uniform distribution) that will directly transition to the cycle. It progressively populates outer shells of nodes until all nodes in the basin are included.
 
 Note that, even if the number of nodes in a layer is determined using a uniform distribution between 1 and the number of nodes still available, this algorithm favors layer distributions where layers closer to the cycle are more densely populated. Changing this bias requires modifying the **'layer_distribution'** function.
 
