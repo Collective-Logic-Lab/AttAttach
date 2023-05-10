@@ -7,3 +7,5 @@ The attractor landscape of the deterministic dynamics of a Boolean network with 
 Therefore, it constitutes of a finite number of disconnet components. Each component constitutes of a single cycle (a fixed-point when the length of the cycle is equal to 1) to which a certain number of *branches* (subnetworks with a three topology) are attached. 
 
 **AttAttch** generates this landscape for a specified number of cycles of given lengths.
+
+![alt text]([image URL](https://github.com/EnricoBorriello/AttAttach/blob/main/diagram.png))
