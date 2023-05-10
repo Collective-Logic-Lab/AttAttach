@@ -8,4 +8,6 @@ Therefore, it constitutes of a finite number of disconnet components. Each compo
 
 **AttAttch** generates this landscape for a specified number of cycles of given lengths.
 
-<img src="diagram.png" alt="..." width="420" height="180">
+<div class="text-center">
+  <img src="diagram.png" alt="..." width="420" height="180">
+</div>
