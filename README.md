@@ -1,3 +1,5 @@
+# **AttAttach**
+
 **AttAttach** is a Python library for generating the attractor landscape of a Boolean network with a given number and types of attractors.
 
 The attractor landscape of the deterministic dynamics of a Boolean network with $N$ dynamic nodes possesses the following properties:
