@@ -16,6 +16,6 @@ For each basin, **AttAttach** first generates the transitions within the cycle. 
 
 Note that, even if the number of nodes in a layer is determined using a uniform distribution between 1 and the number of nodes still available, this algorithm favors layer distributions where layers closer to the cycle are more densely populated. Changing this bias requires modifying the **'layer_distribution'** function.
 
-This process is repeated for each basin. The disconnected components are then joined, and the final labels are permuted. This also means that these transitions can happen between states at arbitrary Hamming distance. If this is an unwanted feature, then the 
+This process is repeated for each basin. The disconnected components are then joined, and the final labels are permuted. This also means that these transitions can happen between states at arbitrary Hamming distance. If this is an unwanted feature, then the **'labels_permutation'** function needs to be modified.
 
 <img src="diagram.png" alt="..." width="630" height="270">
