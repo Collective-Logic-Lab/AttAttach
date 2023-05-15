@@ -21,4 +21,4 @@ This process is repeated for each basin. The disconnected components are then jo
 <img src="diagram.png" alt="..." width="630" height="270">
 
 **Related Repositories:**
-* [https://github.com/EnricoBorriello/AttAttach](https://github.com/EnricoBorriello/Witness-Set)
+* https://github.com/EnricoBorriello/Witness-Set
