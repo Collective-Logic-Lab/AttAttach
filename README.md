@@ -19,3 +19,6 @@ Note that, even if the number of nodes in a layer is determined using a uniform 
 This process is repeated for each basin. The disconnected components are then joined, and the final labels are permuted. This also means that these transitions can happen between states at arbitrary Hamming distance. If this is an unwanted feature, then the **'labels_permutation'** function needs to be modified accordingly.
 
 <img src="diagram.png" alt="..." width="630" height="270">
+
+**Related Repositories:**
+* https://github.com/EnricoBorriello/AttAttach
