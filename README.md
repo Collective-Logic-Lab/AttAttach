@@ -22,3 +22,11 @@ This process is repeated for each basin. The disconnected components are then jo
 
 **Related Repositories:**
 * https://github.com/EnricoBorriello/Witness-Set
+
+# Installation
+
+To install the package and its python dependencies using pip, clone the repository, descend into the `AttAttach/` folder, and run
+
+```
+pip install -e .
+```
