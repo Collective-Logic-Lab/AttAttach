@@ -1,4 +1,5 @@
 import random
+import numpy as np
 
 def transitions_between_layers(inner_layer,outher_layer):
     """
@@ -100,7 +101,7 @@ def generate_landscape(num_nodes,landscape_structure):
     sizes = [int(rel_size*s) for rel_size in rel_sizes] # the last one might be wrong
     sizes[-1] = s-(sum(sizes)-sizes[-1]) # this fixes it
     
-    if sum(rel_sizes) != 1:
+    if not np.allclose(sum(rel_sizes),1.):
         return print('The sum of the relative basin sizes is not 1.')
     else:
     
