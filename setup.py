@@ -16,7 +16,6 @@ setup(
     url = "https://github.com/EnricoBorriello/AttAttach",
     packages=['AttAttach',],
     install_requires=[
-          'random',
     ],
     long_description=read('README.md'),
     classifiers=[
