@@ -100,10 +100,28 @@ def generate_landscape(num_nodes,landscape_structure):
     rel_sizes = [B[1] for B in landscape_structure]
     sizes = [int(rel_size*s) for rel_size in rel_sizes] # the last one might be wrong
     sizes[-1] = s-(sum(sizes)-sizes[-1]) # this fixes it
+    # attractor states in each basin:
+    num_att_states = [ landscape_structure[i][0] for i in range(len(landscape_structure)) ]
     
-    if not np.allclose(sum(rel_sizes),1.):
-        return print('The sum of the relative basin sizes is not 1.')
-    else:
+    # CONDITION 1:
+    # 'The sum of the relative basin sizes needs to be 1'
+    c1 = np.allclose(sum(rel_sizes),1.) 
+
+    # CONDITION 2:
+    # All the basins have at least size 1 
+    # (For small n and small relative size of a basin, the product might result in zero states)
+    c2 = np.prod([sizes[i] > 0 for i in range(len(sizes))])
+
+    # CONDITION3:
+    # There are at least as many states as attractor states
+    c3 = np.sum(num_att_states) <= s
+
+    # CONDITION4:
+    # There are at least as many states as attractor states **in each individual basin**
+    c4 = np.prod([ num_att_states[i] <= sizes[i] for i in range(len(landscape_structure)) ])
+
+    # If all conditions are satisfied, proceed:
+    if c1*c2*c3*c4:
     
         # generate the individual basins
         t = []
@@ -116,3 +134,15 @@ def generate_landscape(num_nodes,landscape_structure):
             all_t = join_transitions(all_t,t[i])
     
         return labels_permutation (all_t)
+
+    else:
+        if not c1:
+            print('ERROR: The sum of the relative basin sizes is not 1.')
+        if not c2:
+            print('ERROR: At least one basin has size 0.')
+            print('       (relative size is too small for your n).')
+        if not c3:
+            print('ERROR: There are more attractor states than total states.')
+        if not c4:
+            print('ERROR: There are more attractor states than total states in at least one basin.')
+        return None
