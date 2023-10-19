@@ -1,5 +1,8 @@
 import random
 import numpy as np
+from itertools import combinations
+import networkx as nx
+from networkx.algorithms import isomorphism
 
 def transitions_between_layers(inner_layer,outher_layer):
     """
@@ -132,8 +135,8 @@ def generate_landscape(num_nodes,landscape_structure):
         all_t = []
         for i in range(len(t)):
             all_t = join_transitions(all_t,t[i])
-    
-        return labels_permutation (all_t)
+
+        return all_t
 
     else:
         if not c1:
@@ -146,3 +149,72 @@ def generate_landscape(num_nodes,landscape_structure):
         if not c4:
             print('ERROR: There are more attractor states than total states in at least one basin.')
         return None
+
+
+def random_labels_permutation (transitions):
+    """
+    randomly reassign state labels
+    """
+    # Generate a random permutation of the labels
+    s = len(transitions)
+    p = list(range(s))
+    random.shuffle(p)
+    # Create a new list of edges with the updated labels
+    new_transitions = [(p[i], p[j]) for (i, j) in transitions]
+    sorted_transitions = sorted(new_transitions, key=lambda x: x[0])
+    return sorted_transitions
+
+
+def hamming_distance(v1, v2):
+    """
+    needed for 'smallH_labels_permutation'
+    ...
+    """
+    return sum(x != y for x, y in zip(v1, v2))
+
+def generate_edges_fixed_H(n, H):
+    """
+    needed for 'smallH_labels_permutation'
+    (Doesn't work with H=0)
+    ...
+    """
+    assert(H>0)
+    vertices = [(i, format(i, f'0{n}b')) for i in range(2**n)]
+    edges = []
+    for v1, v2 in combinations(vertices, 2):
+        if hamming_distance(v1[1], v2[1]) == H:
+            edges.append((v1[0], v2[0]))
+    return edges
+
+def generate_edges_maximum_H(n, Hmax):
+    """
+    needed for 'smallH_labels_permutation'
+    ...
+    """
+    edges = [ (i,i) for i in range(2**n) ]
+    for H in range(1,Hmax+1):
+        edges = edges + generate_edges_fixed_H(n,H)
+    return edges + [ (j,i) for (i,j) in edges ] # may want to clean up here (remove i,i edges)
+
+
+def smallH_labels_permutation (transitions):
+    """
+    Reassign state labels in a way that minimizes 
+    the Hamming beween input and output states.
+    """
+    Hmax = 0
+    mapping = {}
+    while len(mapping) == 0:
+        Hmax = Hmax + 1
+        GT = nx.DiGraph(transitions)
+        n = int(np.log2(len(transitions))) # only for boolean network transitions
+        GH = nx.DiGraph(generate_edges_maximum_H(n,Hmax))
+        DiGM = isomorphism.DiGraphMatcher(GH, GT)
+        if DiGM.subgraph_is_monomorphic():
+            mapping = DiGM.mapping
+    
+    # Create a new list of edges with the updated labels
+    new_transitions = [(mapping[i], mapping[j]) for (i, j) in transitions]
+    sorted_transitions = sorted(new_transitions, key=lambda x: x[0])
+
+    return Hmax, sorted_transitions
