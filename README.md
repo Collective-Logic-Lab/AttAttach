@@ -20,6 +20,21 @@ This process is repeated for each basin. The disconnected components are then jo
 
 <img src="Figures/diagram.png" alt="..." width="630" height="270">
 
+
+# Update Oct 19, 2023
+
+The output of **'generate_landscape'** is no longer randomized.
+The labels are no longer shuffled, so that states with lower labels are closer to the attracors.
+The randomization is performed a posteriori by appliying **'random_labels_permutation'** to the output of 
+**'generate_landscape'**.
+
+For the same topology of the transition graph it is now possible to generate transitions at small Hamming sistance by using the new function 
+**'smallH_labels_permutation'** instead of **'random_labels_permutation'**. The new output is Hmax, sorted_transitions.
+
+Need to update documentation and picture. Add documentation for **'generate_edges_maximum_H(n, Hmax)'**, has it has its own usefulness.
+
+
+
 **Related Repositories:**
 * https://github.com/EnricoBorriello/Witness-Set
 
