@@ -15,7 +15,9 @@ setup(
     keywords = "",
     url = "https://github.com/EnricoBorriello/AttAttach",
     packages=['AttAttach',],
-    install_requires=['numpy',
+    install_requires=[
+        'numpy',
+        'networkx >= 2.5.1',
     ],
     long_description=read('README.md'),
     classifiers=[
