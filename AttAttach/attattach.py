@@ -3,6 +3,7 @@ import numpy as np
 from itertools import combinations
 import networkx as nx
 from networkx.algorithms import isomorphism
+import signal # for implementing timeout
 
 def transitions_between_layers(inner_layer,outher_layer):
     """
@@ -76,18 +77,18 @@ def join_transitions(transitions1,transitions2):
     new_transitions2 = [(p[i], p[j]) for (i, j) in transitions2]
     return transitions1 + new_transitions2
 
-def labels_permutation (transitions):
-    """
-    randomly reassign state labels
-    """
-    # Generate a random permutation of the labels
-    s = len(transitions)
-    p = list(range(s))
-    random.shuffle(p)
-    # Create a new list of edges with the updated labels
-    new_transitions = [(p[i], p[j]) for (i, j) in transitions]
-    sorted_transitions = sorted(new_transitions, key=lambda x: x[0])
-    return sorted_transitions
+#def labels_permutation (transitions):
+#    """
+#    randomly reassign state labels
+#    """
+#    # Generate a random permutation of the labels
+#    s = len(transitions)
+#    p = list(range(s))
+#    random.shuffle(p)
+#    # Create a new list of edges with the updated labels
+#    new_transitions = [(p[i], p[j]) for (i, j) in transitions]
+#    sorted_transitions = sorted(new_transitions, key=lambda x: x[0])
+#    return sorted_transitions
 
 def generate_landscape(num_nodes,landscape_structure):
     """
@@ -196,22 +197,44 @@ def generate_edges_maximum_H(n, Hmax):
         edges = edges + generate_edges_fixed_H(n,H)
     return edges + [ (j,i) for (i,j) in edges ] # may want to clean up here (remove i,i edges)
 
+# Register the timeout signal function handler
+def timeout_handler(signum,frame):
+    raise Exception('attattach.smallH_labels_permutation timeout')
+signal.signal(signal.SIGALRM, timeout_handler)
 
-def smallH_labels_permutation (transitions):
+def smallH_labels_permutation (transitions,timeout=10000):
     """
     Reassign state labels in a way that minimizes 
     the Hamming beween input and output states.
+    
+    Returns:
+        Hmax, sorted_transitions
+    
+    timeout (10000)       : Number of seconds to try finding a subgraph
+                            monomorphism before giving up and trying
+                            larger Hmax.
     """
     Hmax = 0
     mapping = {}
     while len(mapping) == 0:
         Hmax = Hmax + 1
+        #print("DEBUG: attattach smallH_labels_permutation: Hmax = {}".format(Hmax))
         GT = nx.DiGraph(transitions)
         n = int(np.log2(len(transitions))) # only for boolean network transitions
         GH = nx.DiGraph(generate_edges_maximum_H(n,Hmax))
         DiGM = isomorphism.DiGraphMatcher(GH, GT)
-        if DiGM.subgraph_is_monomorphic():
-            mapping = DiGM.mapping
+        
+        # start the timeout alarm
+        signal.alarm(timeout)
+        try:
+            if DiGM.subgraph_is_monomorphic():
+                mapping = DiGM.mapping
+        except Exception:
+            #print("DEBUG: attattach smallH_labels_permutation: timeout")
+            pass
+    
+    # stop the timeout alarm
+    signal.alarm(0)
     
     # Create a new list of edges with the updated labels
     new_transitions = [(mapping[i], mapping[j]) for (i, j) in transitions]
